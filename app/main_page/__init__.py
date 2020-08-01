@@ -1,8 +1,5 @@
 import flask
 
-main_page = flask.Blueprint('main_page', __name__)
+main_page = flask.Blueprint('main_page', __name__, template_folder='templates')
 
-@main_page.route('/')
-def index():
-    return "This is an example app"
-
+from app.main_page import routes

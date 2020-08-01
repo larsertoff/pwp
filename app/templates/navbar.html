@@ -1,0 +1,9 @@
+{% from 'bootstrap/nav.html' import render_nav_item %}
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="navbar-nav mr-auto">
+        {{ render_nav_item('main_page.home_page', 'Home') }}
+        {{ render_nav_item('projects.projects_overview', 'Projects') }}
+        {{ render_nav_item('about.about_page', 'About') }}
+    </div>
+</nav>
