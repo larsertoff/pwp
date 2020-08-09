@@ -1,11 +1,16 @@
 import flask
 from app.projects import projects
 import requests
+from app.projects.utility import GithubQuery
+
 
 @projects.route('/projects/')
 def projects_overview():
 
     # Implement some nice cards one pr public repo
+    gitql = GithubQuery()
+
+    # Make a query
 
     return flask.render_template('projects_overview.html')
 
