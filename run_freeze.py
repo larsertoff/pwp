@@ -2,7 +2,7 @@ from app import create_app
 import flask_frozen
 from flask import url_for
 
-freezer = flask_frozen.Freezer(create_app(config_file_name = 'dev_config.py'))
+freezer = flask_frozen.Freezer(create_app(config_file_name = 'freeze_config.py'))
 
 # Freeze generator
 
