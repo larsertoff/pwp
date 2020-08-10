@@ -11,7 +11,29 @@ def projects_overview():
     gitql = GithubQuery()
 
     # Make a query
+    query = """
+    { viewer { login }}
+    """
+    answer = gitql.run_query(query)
+    print(answer)
 
+    q2 = """ 
+  query{
+    user(login: "larsertoff"){
+        repositories(first: 100, privacy: PUBLIC){
+            nodes{
+                name
+                createdAt
+                url
+                homepageUrl
+            }
+        }
+    }
+}
+"""
+    f = gitql.run_query(q2)
+    print(f)
+    print(f['data']['user']['repositories']['nodes'])
     return flask.render_template('projects_overview.html')
 
 # The idea is to use this as 

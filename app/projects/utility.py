@@ -11,7 +11,8 @@ class GithubQuery:
     '''
     def __init__(self):
         self.github_token = flask.current_app.config['GITHUB_TOKEN']
-        self.headers = {"Authotization": "token " + self.github_token}
+        self.headers = {"Authorization": "token " + self.github_token}
+        print(self.headers)
         self.url = 'https://api.github.com/graphql'
 
     def run_query(self, query):
