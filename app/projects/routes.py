@@ -31,10 +31,15 @@ def projects_overview():
     }
 }
 """
-    f = gitql.run_query(q2)
-    print(f)
-    print(f['data']['user']['repositories']['nodes'])
-    return flask.render_template('projects_overview.html')
+    repository_info = gitql.run_query(q2)
+    print(repository_info)
+    repo_list = repository_info['data']['user']['repositories']['nodes']
+    print(repo_list)
+
+    for i in repo_list:
+        print(i['name'])
+
+    return flask.render_template('projects_overview.html', repo_list = repo_list)
 
 # The idea is to use this as 
 @projects.route('/projects/<repo>/')

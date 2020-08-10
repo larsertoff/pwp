@@ -2,6 +2,13 @@
 
 {% block content %}
 
-Make projects page
+<div class="container-fluid">
+    Make som bad ass cards with this    
+    {% for i in repo_list %}
 
-{% endblock %}
+                <h5 class="card-title">{{i['name']}}</h5>
+        {% endfor %}
+
+        </div>
+
+    {% endblock %}
