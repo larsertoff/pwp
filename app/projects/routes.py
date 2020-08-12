@@ -25,17 +25,13 @@ def projects_overview():
                 name
                 createdAt
                 url
-                homepageUrl
                 descriptionHTML
                 description
-                updatedAT
-                projectsURL
-                primaryLanguage
-                openGraphImageUrl
-                project
-                projects
+                updatedAt
+                primaryLanguage { 
+                    name
+                }
                 resourcePath
-
             }
         }
     }
