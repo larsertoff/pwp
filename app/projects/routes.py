@@ -2,6 +2,7 @@ import flask
 from app.projects import projects
 import requests
 from app.projects.utility import GithubQuery
+import string
 
 
 @projects.route('/projects/')
@@ -15,43 +16,45 @@ def projects_overview():
     { viewer { login }}
     """
     answer = gitql.run_query(query)
-    print(answer)
+    gitql.login
+    print(answer['data']['viewer']['login'])
 
-    q2 = """ 
-  query{
-    user(login: "larsertoff"){
-        repositories(first: 100, privacy: PUBLIC){
-            nodes{
-                name
-                createdAt
-                url
-                descriptionHTML
-                description
-                updatedAt
-                primaryLanguage { 
+    query_all_public_repos = string.Template("""
+    query {
+        user(login: "${username}"){
+            repositories(first: 100, privacy: PUBLIC){
+                nodes{
                     name
+                    createdAt
+                    url
+                    descriptionHTML
+                    description
+                    updatedAt
+                    primaryLanguage { 
+                    name
+                    }
+                    resourcePath
                 }
-                resourcePath
             }
         }
-    }
-}
-"""
-    repository_info = gitql.run_query(q2)
-    print(repository_info)
+    }""")
+    
+    query_string = str(query_all_public_repos.substitute(username = gitql.login))
+    repository_info = gitql.run_query(query_string)
     repo_list = repository_info['data']['user']['repositories']['nodes']
-    print(repo_list)
 
     for i in repo_list:
+        print(i)
         print(i['name'])
 
-    return flask.render_template('projects_overview.html', repo_list = repo_list)
+    return flask.render_template('projects_overview.html', repo_list=repo_list)
 
-# The idea is to use this as 
+# The idea is to use this as
+
+
 @projects.route('/projects/<repo>/')
-def projects_specific(repo = None):
+def projects_specific(repo=None):
 
     # Get info on specific repo present nicely
 
-    return flask.render_template('projects_specific.html', repo = repo)
-    
+    return flask.render_template('projects_specific.html', repo=repo)

@@ -7,13 +7,14 @@ headers = {"Authorization": "Bearer YOUR API KEY"}
 
 class GithubQuery:
     '''
-    Class to query github graphql
+    Class to query github graphql also to keep info on 
     '''
     def __init__(self):
         self.github_token = flask.current_app.config['GITHUB_TOKEN']
         self.headers = {"Authorization": "token " + self.github_token}
-        print(self.headers)
         self.url = 'https://api.github.com/graphql'
+        self.login = self.run_query("""{viewer { login}}""")['data']['viewer']['login']
+
 
     def run_query(self, query):
         '''
@@ -24,4 +25,6 @@ class GithubQuery:
             return request.json()
         else:
             raise Exception("Query failed to run by returning code of {}. {}".format(request.status_code, query))
-        
+
+    def set_node_content_as_attribute(self, node_dict):
+        pass
