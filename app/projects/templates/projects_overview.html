@@ -13,6 +13,9 @@
                         <h5 class="card-title">{{repo['name']}}</h5>
                         <p class="card-text">
                             {{repo['description']}}
+                        
+                            <a href= {{ url_for('projects.projects_specific', repo = repo['name']) }}>Index</a>
+                            {{ url_for('projects.projects_specific', repo = repo['name']) }}
                         </p>
                     </div>
                     <div class="card-footer">

@@ -3,6 +3,7 @@ from app.projects import projects
 import requests
 from app.projects.utility import GithubQuery
 import string
+from flask import url_for
 
 
 @projects.route('/projects/')
