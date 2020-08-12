@@ -26,6 +26,16 @@ def projects_overview():
                 createdAt
                 url
                 homepageUrl
+                descriptionHTML
+                description
+                updatedAT
+                projectsURL
+                primaryLanguage
+                openGraphImageUrl
+                project
+                projects
+                resourcePath
+
             }
         }
     }
