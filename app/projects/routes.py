@@ -31,7 +31,7 @@ def projects_overview():
                     descriptionHTML
                     description
                     updatedAt
-                    primaryLanguage { 
+                    primaryLanguage {
                     name
                     }
                     resourcePath
@@ -39,22 +39,63 @@ def projects_overview():
             }
         }
     }""")
-    
-    query_string = str(query_all_public_repos.substitute(username = gitql.login))
+
+    query_string = str(query_all_public_repos.substitute(username=gitql.login))
     repository_info = gitql.run_query(query_string)
     repo_list = repository_info['data']['user']['repositories']['nodes']
 
-    for i in repo_list:
-        print(i)
-        print(i['name'])
+    # Ensure the one updated latest is first
+    sorted(repo_list, key=lambda k: k['updatedAt']).reverse()
 
     return flask.render_template('projects_overview.html', repo_list=repo_list)
-
-# The idea is to use this as
 
 
 @projects.route('/projects/<repo>/')
 def projects_specific(repo=None):
+
+    gitql = GithubQuery()
+
+    query_specific_repo = string.Template("""
+    rateLimit{
+  cost
+  remaining
+  resetAt
+ }
+            repository(owner: "${username}", name: "${repository}") {
+                    name
+                    createdAt
+                    url
+                    descriptionHTML
+                    description
+                    updatedAt
+                    primaryLanguage {
+                    name
+                    }
+                }
+            }""")
+
+    
+    query_string = str(query_specific_repo.substitute(username=gitql.login, repository = repo))
+    specific_repository = gitql.run_query(query_string)
+    print(query_string)
+
+    print(specific_repository)
+    query_specific_file=string.Template("""{
+                    repository(owner: "${username}", name: "${repository}" ) {
+                    object(expression: "master:webpage_post/main.json") {
+                    ... on Blob {
+                    text
+                    byteSize
+                    }
+                }
+            }
+        }""")
+    print(repo)
+    query_string = str(query_specific_file.substitute(username=gitql.login, repository = repo))
+    print(query_string)
+    specific_file = gitql.run_query(query_string)
+
+    print(specific_file)
 
     # Get info on specific repo present nicely
 
