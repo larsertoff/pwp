@@ -72,7 +72,7 @@ def projects_specific(repo=None):
     
     query_string = str(query_specific_repo.substitute(username=gitql.login, repository = repo))
     specific_repository = gitql.run_query(query_string)
-    print(query_string)
+    print(specific_repository)
 
     query_blog_post_folder = string.Template("""
     repository(owner: "${username}", name: "${repository}" ) {
