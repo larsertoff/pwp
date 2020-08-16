@@ -56,11 +56,6 @@ def projects_specific(repo=None):
     gitql = GithubQuery()
 
     query_specific_repo = string.Template("""
-    rateLimit{
-  cost
-  remaining
-  resetAt
- }
             repository(owner: "${username}", name: "${repository}") {
                     name
                     createdAt
@@ -79,10 +74,25 @@ def projects_specific(repo=None):
     specific_repository = gitql.run_query(query_string)
     print(query_string)
 
-    print(specific_repository)
+    query_blog_post_folder = string.Template("""
+    repository(owner: "${username}", name: "${repository}" ) {
+       filename: object(expression: "master:example/") {
+      ... on Tree {
+        entries {
+          name
+          }
+          }
+          }
+          }
+    """)
+    query_string = str(query_blog_post_folder.substitute(username=gitql.login, repository = repo))
+    specific_file = gitql.run_query(query_string)
+    print(specific_file)
+
+    # Look for a file named main.json
     query_specific_file=string.Template("""{
                     repository(owner: "${username}", name: "${repository}" ) {
-                    object(expression: "master:webpage_post/main.json") {
+                    object(expression: "master:blog_post/main.json") {
                     ... on Blob {
                     text
                     byteSize

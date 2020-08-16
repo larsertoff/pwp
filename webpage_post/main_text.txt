@@ -1,1 +1,0 @@
-This is the main text which can be importet directly through graphql
