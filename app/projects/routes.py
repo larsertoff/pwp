@@ -70,30 +70,10 @@ def projects_specific(repo=None):
 
     specific_repository = specific_repository['data']['repository']
 
-    query_blog_post_folder = string.Template("""query{
-    repository(owner: "${username}", name: "${repository}" ) {
-       filename: object(expression: "master:blog_post/") {
-      ... on Tree {
-        entries {
-          name
-          }
-          }
-          }
-          }
-          }
-    """)
-    query_string = str(query_blog_post_folder.substitute(username=gitql.login, repository = repo))
-    blog_post_folder = gitql.run_query(query_string)
-    
-    blog_post_folder = blog_post_folder['data']['repository']['filename']
-
-    if blog_post_folder is None:
-        print("Something is wrong with the query")
-
     # Look for a file named main.json
     query_specific_file=string.Template("""{
                     repository(owner: "${username}", name: "${repository}" ) {
-                    object(expression: "master:blog_post/main.json") {
+                    object(expression: "master:README.md") {
                     ... on Blob {
                     text
                     byteSize
@@ -107,15 +87,14 @@ def projects_specific(repo=None):
     specific_file = specific_file['data']['repository']['object']
 
     # Get info on specific repo present nicely
-
     print(specific_repository)
-    print(blog_post_folder)
     print(specific_file)
 
 
     # Ensure some healty default if the queries are off
-    if [x for x in (specific_repository, blog_post_folder, specific_file) if x is None]:
-        # Fix the queries with some default, il rather do it here than in the template
-        pass
+    if [x for x in (specific_repository, specific_file) if x is None]:
+        specific_file = {'text':"""# Work in progress"""}
 
-    return flask.render_template('projects_specific.html', repo=repo, specific_file = specific_file)
+    markdown_text = specific_file['text']
+
+    return flask.render_template('projects_specific.html', repo=repo, markdown_text = markdown_text)
