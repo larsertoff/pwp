@@ -3,8 +3,6 @@ import flask_bootstrap
 import os
 from flask_bootstrap import Bootstrap
 from flask import Flask
-from flaskext.markdown import Markdown
-
 
 def create_app(config_file_name: str) -> flask.Flask:
     '''
@@ -21,7 +19,6 @@ def create_app(config_file_name: str) -> flask.Flask:
 
     # Use bootstrap 4 for simple styling
     bootstrap = flask_bootstrap.Bootstrap(app)
-    markdown = Markdown(app)
 
     # Import main page blueprint
     from app.main_page import main_page

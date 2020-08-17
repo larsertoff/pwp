@@ -2,4 +2,3 @@ flask
 Frozen-Flask
 bootstrap-flask
 requests
-flask-markdown
