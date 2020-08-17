@@ -4,7 +4,7 @@ import requests
 from app.projects.utility import GithubQuery
 import string
 from flask import url_for
-
+import markdown
 
 @projects.route('/projects/')
 def projects_overview():
@@ -60,9 +60,13 @@ def projects_specific(repo=None):
             repository(name:"${repository}", owner:"${username}"){
                         id
                         name
-                        description
+                        createdAt
+                        url
+                        primaryLanguage {
+                        name
                         }
-                    }""")
+                    }
+                }""")
 
     
     query_string = str(query_specific_repo.substitute(username=gitql.login, repository = repo))
@@ -85,11 +89,7 @@ def projects_specific(repo=None):
     specific_file = gitql.run_query(query_string)
 
     specific_file = specific_file['data']['repository']['object']
-
-    # Get info on specific repo present nicely
     print(specific_repository)
-    print(specific_file)
-
 
     # Ensure some healty default if the queries are off
     if [x for x in (specific_repository, specific_file) if x is None]:
@@ -97,4 +97,7 @@ def projects_specific(repo=None):
 
     markdown_text = specific_file['text']
 
-    return flask.render_template('projects_specific.html', repo=repo, markdown_text = markdown_text)
+    markdown_html = markdown.markdown(markdown_text, extensions = ['fenced_code', 'codehilite'])
+
+
+    return flask.render_template('projects_specific.html', repo=repo, markdown_html = markdown_html, specific_repository = specific_repository)
