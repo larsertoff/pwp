@@ -5,6 +5,7 @@ from app.projects.utility import GithubQuery
 import string
 from flask import url_for
 import markdown
+import markdown2
 
 @projects.route('/projects/')
 def projects_overview():
@@ -97,7 +98,11 @@ def projects_specific(repo=None):
 
     markdown_text = specific_file['text']
 
-    markdown_html = markdown.markdown(markdown_text, extensions = ['fenced_code', 'codehilite'])
+    markdown_html = markdown.markdown(markdown_text, extensions = ['codehilite', 'fenced_code'])
+    print(markdown_html)
 
+    markdown2_html = markdown2.markdown(markdown_text, extras =["fenced-code-blocks"])
+    print(markdown2_html)
 
-    return flask.render_template('projects_specific.html', repo=repo, markdown_html = markdown_html, specific_repository = specific_repository)
+    return flask.render_template('projects_specific.html', repo=repo, markdown_html = markdown_html, 
+    mark2_html = markdown2_html, specific_repository = specific_repository)

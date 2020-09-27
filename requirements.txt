@@ -3,3 +3,4 @@ Frozen-Flask
 bootstrap-flask
 requests
 markdown
+pygments

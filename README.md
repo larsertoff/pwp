@@ -5,7 +5,7 @@
 
 Small personal webpage larslehre.com
 
-$L^{3}$
+L^3
 
 
 
